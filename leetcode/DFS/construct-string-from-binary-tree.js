@@ -16,20 +16,32 @@
  */
 
 var tree2str = function (root) {
-    let string = '';
-    function dfs(node) {
-        if (node === null) {
-            return;
-        }
-        console.log('node', node.val);
-        string += `(${node.val}`;
-        if (!node.left && node.right) {
-            string += `()`;
-        }
-        dfs(node.left) || dfs(node.right);
-        string += ')';
+  let string = "";
+  function dfs(node) {
+    if (node === null) {
+      return;
     }
-    dfs(root);
-    let str = string.substr(1, string.length - 2);
-    return str;
+    console.log("node", node.val);
+    string += `(${node.val}`;
+    if (!node.left && node.right) {
+      string += `()`;
+    }
+    dfs(node.left) || dfs(node.right);
+    string += ")";
+  }
+  dfs(root);
+  let str = string.substr(1, string.length - 2);
+  return str;
+};
+
+var tree2str = function (t) {
+  if (!t) return "";
+
+  const left = tree2str(t.left);
+  const right = tree2str(t.right);
+
+  // omit printing empty right node in the string
+  if (right) return `${t.val}(${left})(${right})`;
+  else if (left) return `${t.val}(${left})`;
+  else return `${t.val}`;
 };
