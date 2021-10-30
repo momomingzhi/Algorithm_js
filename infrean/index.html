@@ -5,32 +5,35 @@
   </head>
   <body>
     <script>
-      function count(song, capacity) {
+      function count(stable, dist) {
         let cnt = 1,
-          sum = 0;
-        for (let x of song) {
-          if (sum + x > capacity) {
+          ep = stable[0]; //맨 첫번째 말의 위치
+        for (let i = 0; i < stable.length; i++) {
+          if (stable[i] - ep >= dist) {
+            //stable[1] - stable[0]의 의미는 두번째 말의 위치 - 첫번째 말
             cnt++;
-            sum = x;
-          } else sum += x;
+            ep = stable[i]; // 조건이 맞아떨어지면 두번째 말의 위치로 ep 바꿔주기
+          }
         }
         return cnt;
       }
-      function solution(m, songs) {
+      function solution(c, stable) {
         let ans;
-        let lt = Math.max(...songs);
-        let rt = songs.reduce((a, b) => a + b, 0);
+        stable.sort((a, b) => a - b);
+        let lt = 1;
+        let rt = stable[stable.length - 1];
         while (lt <= rt) {
           let mid = parseInt((lt + rt) / 2);
-          if (count(songs, mid) <= m) {
+          if (count(stable, mid) >= c) {
+            // c(말의수)보다 많이 나왔다는 거면 최대 거리 더 만들 수 있다는 의미!
             ans = mid;
-            rt = mid - 1;
-          } else lt = mid + 1;
+            lt = mid + 1;
+          } else rt = mid - 1;
         }
         return ans;
       }
 
-      let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+      let arr = [1, 2, 8, 4, 9];
       console.log(solution(3, arr));
     </script>
   </body>
