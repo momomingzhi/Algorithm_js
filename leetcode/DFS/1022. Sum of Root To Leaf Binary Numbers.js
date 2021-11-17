@@ -29,7 +29,7 @@
  *
  * @format
  */
-
+// map으로 안돌릴려면 + 사용하면 될듯..
 var sumRootToLeaf = function (root) {
     const dfs = (root) => {
         if (!root) return [];
