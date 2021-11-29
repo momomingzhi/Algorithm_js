@@ -34,36 +34,54 @@
  */
 
 var allPathsSourceTarget = function (graph) {
-    let map = new Map();
-    let visited = new Set();
-    for (let i = 0; i < graph.length; i++) {
-        if (graph[i].length) {
-            graph[i].forEach((v) => {
-                if (map.has(i)) {
-                    map.get(i).push(v);
-                } else {
-                    map.set(i, [v]);
-                }
-            });
+  let map = new Map();
+  for (let i = 0; i < graph.length; i++) {
+    if (graph[i].length) {
+      graph[i].forEach((v) => {
+        if (map.has(i)) {
+          map.get(i).push(v);
+        } else {
+          map.set(i, [v]);
         }
+      });
     }
-    let res = [];
-    function dfs(v, path) {
-        let newPath = [...path, v];
-        if (newPath[newPath.length - 1] == graph.length - 1) {
-            res.push(newPath);
-            return;
-        }
-        //console.log(newPath)
-        const edges = map.get(v);
-        if (edges && edges.length) {
-            for (const e of edges) {
-                dfs(e, newPath);
-            }
-        }
+  }
+  let res = [];
+  function dfs(v, path) {
+    let newPath = [...path, v];
+    if (newPath[newPath.length - 1] == graph.length - 1) {
+      res.push(newPath);
+      return;
     }
-    dfs(0, []);
-    //console.log(map)
-    //console.log(res)
-    return res;
+    const edges = map.get(v);
+    if (edges && edges.length) {
+      for (const e of edges) {
+        dfs(e, newPath);
+      }
+    }
+  }
+  dfs(0, []);
+  return res;
+};
+var allPathsSourceTarget = function (graph) {
+  const paths = [];
+  const dfs = (index, path) => {
+    console.log(path, path[path.length - 1], graph.length - 1);
+    /*
+        [ 0 ] 0 3
+        [ 0, 1 ] 1 3
+        [ 0, 1, 3 ] 3 3
+        [ 0, 2 ] 2 3
+        [ 0, 2, 3 ] 3 3
+        */
+    if (path[path.length - 1] === graph.length - 1) {
+      paths.push(path);
+      return;
+    }
+    for (let i = 0; i < graph[index].length; i++) {
+      dfs(graph[index][i], [...path, graph[index][i]]);
+    }
+  };
+  dfs(0, [0]);
+  return paths;
 };
