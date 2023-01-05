@@ -17,30 +17,66 @@ var fs = require("fs");
 // const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 let [n, m] = fs.readFileSync("./input.txt").toString().trim().split("\n");
 const arr = m.split(" ").map((x) => +x);
-let stack = [];
-let len = arr.length - 1;
-let flag = false;
-let max = Math.max(...arr);
-console.log(max);
-for (let i = 0; i < arr.length; i++) {
-  if (max === arr[i]) {
-    console.log(max, arr[i]);
-    stack.push(-1);
-  } else if (arr[i] < arr[i + 1]) {
-    stack.push(arr[i + 1]);
-    if (flag) {
-      for (let j = stack.length - 1; j >= i - 1; j--) {
-        console.log(arr[i]);
-        if (stack[stack.length - 1] > stack[j]) {
-          stack[j] = stack[stack.length - 1];
-        }
-      }
-      flag = false;
+
+let res = Array(arr.length).fill(-1);
+let stack = [arr[arr.length-1]];
+const top = (arr) => arr[arr.length-1];
+for(let i=arr.length-2;i>=0;i--){
+  while(stack.length>0){
+    console.log(top(stack),arr[i])
+    if(top(stack)>arr[i]){
+      res[i] = top(stack);
+      break;  
     }
-  } else {
-    stack.push(arr[i]);
-    flag = true;
+    stack.pop();  
   }
+  stack.push(arr[i]);
+  
 }
-if (stack.length - 1 !== -1) stack.push(-1);
-console.log(stack);
+console.log(res)
+// let stack = [];
+// let flag = {
+//   idx: 0,
+//   bool: false,
+// };
+// let max = Math.max(...arr);
+// for (let i = 0; i < arr.length; i++) {
+//   //console.log(arr[i], stack);
+//   if (max === arr[i]) {
+//     stack.push(-1);
+//   } else if (arr[i] < arr[i + 1]) {
+//     stack.push(arr[i + 1]);
+//     if (flag) {
+//       for (let j = stack.length - 1; j >= i - 1; j--) {
+//         if (stack[stack.length - 1] > stack[j]) {
+//           stack[j] = stack[stack.length - 1];
+//         }
+//       }
+//     //   console.log("ㅇ아아아:", i - 2);
+//       for (let j = i - 1; j >= 0; j--) {
+//         if (stack[stack.length - 1] < stack[j]) {
+//           stack[j] = -1;
+//         }
+//       }
+//       flag = {
+//         idx: i,
+//         bool: false,
+//       };
+//     }
+//   } else {
+//     if (i === arr.length - 1) {
+//       if (flag["bool"]) {
+//         for (let j = stack.length - 1; j >= flag["idx"]; j--) {
+//           stack[j] = -1;
+//         }
+//       }
+//       stack.push(-1);
+//     } else stack.push(arr[i]);
+//     flag = {
+//       idx: i,
+//       bool: true,
+//     };
+//   }
+// }
+
+// console.log(stack);
