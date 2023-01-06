@@ -36,3 +36,4 @@ if(res === ''){
 }else{
     console.log(stack.join(''))
 }
+console.log(JSON.parse({a:1,b:2}))
